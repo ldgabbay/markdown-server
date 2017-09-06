@@ -1,0 +1,7 @@
+{
+  "name": "wiki-server",
+  "version": "1.0.0",
+  "dependencies": {
+    "marked": "^0.3.6"
+  }
+}
