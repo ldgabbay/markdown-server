@@ -1,7 +1,27 @@
 {
-  "name": "wiki-server",
+  "name": "markdown-server",
   "version": "1.0.0",
+  "description": "A local server to host a directory of markdown files as a formatted website.",
+  "keywords": [
+    "markdown"
+  ],
+  "homepage": "https://github.com/ldgabbay/markdown-server",
+  "bugs": {
+    "url": "https://github.com/ldgabbay/markdown-server/issues",
+    "email": "gabbay@gmail.com"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Lynn Gabbay",
+    "email": "gabbay@gmail.com",
+    "url": "https://github.com/ldgabbay"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ldgabbay/markdown-server"
+  },
   "dependencies": {
-    "marked": "^0.3.6"
+    "marked": "^0.3.6",
+    "minimist": "^1.2.0"
   }
 }
