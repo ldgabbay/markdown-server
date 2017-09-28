@@ -23,6 +23,8 @@ ${body}
 </html>`;
 }
 
+// ⬑⬑⬑⬑⬑⬑⬑
+
 const extensionToMimeType = {
   ".aac": "audio/aac",
   ".abw": "application/x-abiword",
@@ -127,7 +129,7 @@ const requestHandler = (request, response) => {
         return;
       }
 
-      const files = fs.readdirSync(fsPath);
+      const entries = fs.readdirSync(fsPath);
 
       for (let indexPath of ['index.md', 'index.html', 'index.htm']) {
         if (fs.existsSync(path.join(fsPath, indexPath))) {
@@ -139,8 +141,22 @@ const requestHandler = (request, response) => {
         }
       }
 
+      const files = [];
+      const dirs = [];
+      for (let entry of entries) {
+        let entryPath = path.join(fsPath, entry)
+        const stat = fs.statSync(entryPath);
+        if (stat.isDirectory())
+          dirs.push(entry);
+        else if (stat.isFile())
+          files.push(entry);
+      }
+
       const chunks = [];
       chunks.push("<table><tbody>")
+      for (let dir of dirs) {
+        chunks.push(`<tr><td><b><a href=\"${dir}/\">${dir}/</a></b></td></tr>`);
+      }
       for (let file of files) {
         chunks.push(`<tr><td><a href=\"${file}\">${file}</a></td></tr>`);
       }
