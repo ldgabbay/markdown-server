@@ -106,7 +106,8 @@ const requestHandler = (request, response) => {
 
   if (request.method === 'GET') {
     const parsedURL = url.parse(request.url);
-    const fsPath = path.join(root, parsedURL.pathname);
+    const pathElements = parsedURL.pathname.split('/').map(x => decodeURIComponent(x));
+    const fsPath = path.join(root, ...pathElements);
 
     if (!fs.existsSync(fsPath)) {
       response.statusCode = 404;
@@ -155,10 +156,10 @@ const requestHandler = (request, response) => {
       const chunks = [];
       chunks.push("<table><tbody>")
       for (let dir of dirs) {
-        chunks.push(`<tr><td><b><a href=\"${dir}/\">${dir}/</a></b></td></tr>`);
+        chunks.push(`<tr><td><b><a href=\"${encodeURIComponent(dir)}/\">${dir}/</a></b></td></tr>`);
       }
       for (let file of files) {
-        chunks.push(`<tr><td><a href=\"${file}\">${file}</a></td></tr>`);
+        chunks.push(`<tr><td><a href=\"${encodeURIComponent(file)}\">${file}</a></td></tr>`);
       }
       chunks.push("</tbody></table>");
 
