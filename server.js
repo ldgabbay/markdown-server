@@ -107,12 +107,16 @@ const requestHandler = (request, response) => {
   if (request.method === 'GET') {
     const parsedURL = url.parse(request.url);
     const pathElements = parsedURL.pathname.split('/').map(x => decodeURIComponent(x));
-    const fsPath = path.join(root, ...pathElements);
+    let fsPath = path.join(root, ...pathElements);
 
     if (!fs.existsSync(fsPath)) {
-      response.statusCode = 404;
-      response.end(); // `File ${parsedURL.pathname} not found!`
-      return;
+      // wasn't found in root, try in "./static/"
+      fsPath = path.join(__dirname, "static", ...pathElements);
+      if (!fs.existsSync(fsPath)) {
+        response.statusCode = 404;
+        response.end(); // `File ${parsedURL.pathname} not found!`
+        return;
+      }
     }
 
     const stat = fs.statSync(fsPath);
