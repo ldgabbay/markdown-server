@@ -16,9 +16,13 @@ function wrap(body) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/markdown.css">
+    <link rel="stylesheet" href="/highlight.js/9.12.0/styles/hybrid.min.css">
+    <script src="/highlight.js/9.12.0/highlight.min.js"></script>
+    <script src="/highlight.js/9.12.0/languages/swift.min.js"></script>
     </head>
 <body>
 ${body}
+<script>hljs.initHighlightingOnLoad();</script>
 </body>
 </html>`;
 }
