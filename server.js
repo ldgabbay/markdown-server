@@ -190,6 +190,12 @@ const requestHandler = (request, response) => {
     //=== Static file
 
     {
+      if (parsedURL.pathname.endsWith('.css')) {
+        response.setHeader('Content-Type', 'text/css');
+      }
+      if (parsedURL.pathname.endsWith('.js')) {
+        response.setHeader('Content-Type', 'application/javascript');
+      }
       const readStream = fs.createReadStream(fsPath);
       readStream.pipe(response);
       // response.end();
