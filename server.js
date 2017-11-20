@@ -19,7 +19,7 @@ function wrap(body) {
     <link rel="stylesheet" href="/highlight.js/9.12.0/styles/github.min.css">
     <script src="/highlight.js/9.12.0/highlight.min.js"></script>
     <script src="/highlight.js/9.12.0/languages/swift.min.js"></script>
-    </head>
+</head>
 <body>
 ${body}
 <script>hljs.initHighlightingOnLoad();</script>
