@@ -4,8 +4,8 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const url = require('url');
+const execSync = require('child_process').execSync;
 
-const marked = require('marked');
 const minimist = require('minimist');
 
 
@@ -182,7 +182,8 @@ const requestHandler = (request, response) => {
     if (parsedURL.pathname.endsWith('.md')) {
       response.statusCode = 200;
       response.setHeader('Content-Type', 'text/html');
-      response.end(wrap(marked(fs.readFileSync(fsPath).toString())));
+      const html = execSync(`cmark-gfm -e table -e strikethrough -e autolink -e tagfilter ${fsPath}`);
+      response.end(wrap(html));
       return;
     }
 
