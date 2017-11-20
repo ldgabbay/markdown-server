@@ -190,6 +190,7 @@ const requestHandler = (request, response) => {
     //=== Static file
 
     {
+      response.statusCode = 200;
       if (parsedURL.pathname.endsWith('.css')) {
         response.setHeader('Content-Type', 'text/css');
       }
