@@ -9,7 +9,25 @@ const execSync = require('child_process').execSync;
 const minimist = require('minimist');
 
 
-function wrap(body) {
+function wrap(pathElements, body) {
+  var pathElements = pathElements.slice(1);
+  if (pathElements[pathElements.length-1] === '') {
+    pathElements = pathElements.slice(0, -1);
+  }
+ 
+  var crumbBody;
+  if (pathElements.length === 0) {
+    crumbBody = "&#x2302;"
+  } else {
+    crumbBody = `<a href="/">&#x2302;</a>`;
+    var url = "/";
+    pathElements.slice(0, -1).forEach(function(pathElement) {
+      url += `${encodeURIComponent(pathElement)}/`
+      crumbBody += ` &rsaquo; <a href="${url}">${pathElement}</a>`;
+    });
+    crumbBody += ` &rsaquo; ${pathElements[pathElements.length-1]}`;
+  }
+
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,11 +39,14 @@ function wrap(body) {
     <script src="/highlight.js/9.12.0/languages/swift.min.js"></script>
 </head>
 <body>
+<div class="crumbs">${crumbBody}</div>
 ${body}
+<div class="crumbs">${crumbBody}</div>
 <script>hljs.initHighlightingOnLoad();</script>
 </body>
 </html>`;
 }
+
 
 // ⬑⬑⬑⬑⬑⬑⬑
 
@@ -172,7 +193,7 @@ const requestHandler = (request, response) => {
       chunks.push("</tbody></table>");
 
       response.setHeader('Content-Type', 'text/html');
-      response.end(wrap(chunks.join('')));
+      response.end(wrap(pathElements, chunks.join('')));
       return;
     }
 
@@ -183,7 +204,7 @@ const requestHandler = (request, response) => {
       response.statusCode = 200;
       response.setHeader('Content-Type', 'text/html');
       const html = execSync(`cmark-gfm -e table -e strikethrough -e autolink -e tagfilter ${fsPath}`);
-      response.end(wrap(html));
+      response.end(wrap(pathElements, html));
       return;
     }
 
