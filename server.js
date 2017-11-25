@@ -41,7 +41,6 @@ function wrap(pathElements, body) {
 <body>
 <div class="crumbs">${crumbBody}</div>
 ${body}
-<div class="crumbs">${crumbBody}</div>
 <script>hljs.initHighlightingOnLoad();</script>
 </body>
 </html>`;
