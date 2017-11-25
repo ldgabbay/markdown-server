@@ -212,6 +212,9 @@ const requestHandler = (request, response) => {
 
     {
       response.statusCode = 200;
+      if (parsedURL.pathname.endsWith('.html')) {
+        response.setHeader('Content-Type', 'text/html');
+      }
       if (parsedURL.pathname.endsWith('.css')) {
         response.setHeader('Content-Type', 'text/css');
       }
