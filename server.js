@@ -160,15 +160,15 @@ const requestHandler = (request, response) => {
 
       const entries = fs.readdirSync(fsPath);
 
-      for (let indexPath of ['index.md', 'index.html', 'index.htm']) {
-        if (fs.existsSync(path.join(fsPath, indexPath))) {
-          response.statusCode = 307;
-          parsedURL.pathname = parsedURL.pathname + indexPath;
-          response.setHeader('Location', url.format(parsedURL));
-          response.end();
-          return;
-        }
-      }
+      // for (let indexPath of ['index.md', 'index.html', 'index.htm']) {
+      //   if (fs.existsSync(path.join(fsPath, indexPath))) {
+      //     response.statusCode = 307;
+      //     parsedURL.pathname = parsedURL.pathname + indexPath;
+      //     response.setHeader('Location', url.format(parsedURL));
+      //     response.end();
+      //     return;
+      //   }
+      // }
 
       const files = [];
       const dirs = [];
