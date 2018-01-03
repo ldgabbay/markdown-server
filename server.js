@@ -145,6 +145,8 @@ const requestHandler = (request, response) => {
 
     const stat = fs.statSync(fsPath);
 
+    response.setHeader('Access-Control-Allow-Origin', '*');
+
 
     //=== Directory
 
