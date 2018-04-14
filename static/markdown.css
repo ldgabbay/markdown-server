@@ -1,5 +1,30 @@
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v18/KFOmCnqEu92Fr1Mu4mxP.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Roboto Condensed';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto Condensed'), local('RobotoCondensed-Regular'), url(https://fonts.gstatic.com/s/robotocondensed/v16/ieVl2ZhZI2eCN5jzbjEETS9weq8-19K7CA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Roboto Mono';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto Mono'), local('RobotoMono-Regular'), url(https://fonts.gstatic.com/s/robotomono/v5/L0x5DF4xlVMF-BfR8bXMIjhLq3o.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Roboto Slab';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto Slab Regular'), local('RobotoSlab-Regular'), url(https://fonts.gstatic.com/s/robotoslab/v7/BngMUXZYTXPIvIBgJJSb6ufN5qA.ttf) format('truetype');
+}
+
 body {
-  font-family: Helvetica, arial, sans-serif;
+  font-family: Roboto,sans-serif;
   font-size: 14px;
   line-height: 1.6;
   padding-top: 10px;
@@ -355,6 +380,7 @@ code, tt {
   border: 1px solid #eaeaea;
   background-color: #f8f8f8;
   border-radius: 3px;
+  font-family: Roboto Mono,monospace;
 }
 
 pre code {
