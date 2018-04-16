@@ -14,13 +14,16 @@ function wrap(pathElements, body) {
   if (pathElements[pathElements.length-1] === '') {
     pathElements = pathElements.slice(0, -1);
   }
- 
-  const homeIcon = "&#x2302;";
+  
+  // color #333 comes from markdown.css body
+  const homeIcon = `<div class="icon baseline"><svg viewBox="0 0 24 24"><path fill="#333" d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z" /></svg></div>`;
+  // color #4183C4 comes from markdown.css a
+  const linkHomeIcon = `<div class="icon baseline"><svg viewBox="0 0 24 24"><path fill="#4183C4" d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z" /></svg></div>`;
   var crumbBody;
   if (pathElements.length === 0) {
     crumbBody = homeIcon
   } else {
-    crumbBody = `<a href="/">${homeIcon}</a>`;
+    crumbBody = `<a href="/">${linkHomeIcon}</a>`;
     var url = "/";
     pathElements.slice(0, -1).forEach(function(pathElement) {
       url += `${encodeURIComponent(pathElement)}/`

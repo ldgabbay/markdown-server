@@ -2183,3 +2183,18 @@ pre code, pre tt {
   background-color: transparent;
   border: none;
 }
+
+.icon {
+    display: inline-flex;
+    align-self: center;
+}
+
+.icon svg, .icon img {
+    height: 1em;
+    width: 1em;
+}
+
+.icon.baseline svg, .icon img {
+    top: .125em;
+    position: relative;
+}
