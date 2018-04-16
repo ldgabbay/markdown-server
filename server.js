@@ -227,6 +227,9 @@ const requestHandler = (request, response) => {
       if (parsedURL.pathname.endsWith('.js')) {
         response.setHeader('Content-Type', 'application/javascript');
       }
+      if (parsedURL.pathname.endsWith('.todo')) {
+        response.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      }
       const readStream = fs.createReadStream(fsPath);
       readStream.pipe(response);
       // response.end();
