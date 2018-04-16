@@ -15,11 +15,12 @@ function wrap(pathElements, body) {
     pathElements = pathElements.slice(0, -1);
   }
  
+  const homeIcon = "&#x2302;";
   var crumbBody;
   if (pathElements.length === 0) {
-    crumbBody = "&#x2302;"
+    crumbBody = homeIcon
   } else {
-    crumbBody = `<a href="/">&#x2302;</a>`;
+    crumbBody = `<a href="/">${homeIcon}</a>`;
     var url = "/";
     pathElements.slice(0, -1).forEach(function(pathElement) {
       url += `${encodeURIComponent(pathElement)}/`
