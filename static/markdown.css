@@ -1,3 +1,7 @@
+* {
+  font-variant-ligatures: none;
+}
+
 /* cyrillic-ext */
 @font-face {
   font-family: 'Roboto';
