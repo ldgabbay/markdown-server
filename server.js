@@ -68,20 +68,20 @@ const extensionToMimeType = {
   ".bz": "application/x-bzip",
   ".bz2": "application/x-bzip2",
   ".csh": "application/x-csh",
-  ".css": "text/css",
+  // ".css": "text/css",
   ".csv": "text/csv",
   ".doc": "application/msword",
   ".eot": "application/vnd.ms-fontobject",
   ".epub": "application/epub+zip",
   ".gif": "image/gif",
   ".htm": "text/html",
-  ".html": "text/html",
+  // ".html": "text/html",
   ".ico": "image/x-icon",
   ".ics": "text/calendar",
   ".jar": "application/java-archive",
   ".jpeg": "image/jpeg",
   ".jpg": "image/jpeg",
-  ".js": "application/javascript",
+  // ".js": "application/javascript",
   ".json": "application/json",
   ".mid": "audio/midi",
   ".midi": "audio/midi",
@@ -122,7 +122,12 @@ const extensionToMimeType = {
   ".zip": "application/zip",
   ".3gp": "video/3gpp",
   ".3g2": "video/3gpp2",
-  ".7z": "application/x-7z-compressed"
+  ".7z": "application/x-7z-compressed",
+
+  '.html': 'text/html; charset=utf-8',
+  '.css': 'text/css',
+  '.js': 'application/javascript',
+  '.todo': 'text/plain; charset=utf-8'
 };
 
 
@@ -223,18 +228,15 @@ const requestHandler = (request, response) => {
 
     {
       response.statusCode = 200;
-      if (parsedURL.pathname.endsWith('.html')) {
-        response.setHeader('Content-Type', 'text/html; charset=utf-8');
+
+      const suffixStart = parsedURL.pathname.lastIndexOf('.');
+      if (suffixStart != -1) {
+        const suffix = parsedURL.pathname.slice(suffixStart);
+        if (extensionToMimeType[suffix]) {
+          response.setHeader('Content-Type', extensionToMimeType[suffix]);
+        }
       }
-      if (parsedURL.pathname.endsWith('.css')) {
-        response.setHeader('Content-Type', 'text/css');
-      }
-      if (parsedURL.pathname.endsWith('.js')) {
-        response.setHeader('Content-Type', 'application/javascript');
-      }
-      if (parsedURL.pathname.endsWith('.todo')) {
-        response.setHeader('Content-Type', 'text/plain; charset=utf-8');
-      }
+
       const readStream = fs.createReadStream(fsPath);
       readStream.pipe(response);
       // response.end();
