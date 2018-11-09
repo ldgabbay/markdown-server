@@ -32,13 +32,18 @@ function wrap(pathElements, body) {
     crumbBody += ` &rsaquo; ${pathElements[pathElements.length-1]}`;
   }
 
+  var localCss = '';
+  if (fs.existsSync(path.join(root, ...pathElements.slice(0,-1), 'local.css'))) {
+    localCss = '\n    <link rel="stylesheet" href="local.css">'
+  }
+
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/markdown.css">
-    <link rel="stylesheet" href="/highlight.js/9.12.0/styles/github.min.css">
+    <link rel="stylesheet" href="/highlight.js/9.12.0/styles/github.min.css">${localCss}
     <script src="/highlight.js/9.12.0/highlight.min.js"></script>
     <script src="/highlight.js/9.12.0/languages/swift.min.js"></script>
 </head>
