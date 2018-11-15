@@ -189,6 +189,7 @@ const requestHandler = (request, response) => {
       const files = [];
       const dirs = [];
       for (let entry of entries) {
+        if (entry[0] === '.') continue;
         let entryPath = path.join(fsPath, entry)
         const stat = fs.statSync(entryPath);
         if (stat.isDirectory())
