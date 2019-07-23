@@ -43,14 +43,14 @@ function wrap(pathElements, body) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/markdown.css">
-    <link rel="stylesheet" href="/highlight.js/9.12.0/styles/github.min.css">${localCss}
-    <script src="/highlight.js/9.12.0/highlight.min.js"></script>
-    <script src="/highlight.js/9.12.0/languages/swift.min.js"></script>
+    <link rel="stylesheet" href="/prism.css" />
+    ${localCss}
 </head>
 <body>
-<div class="crumbs">${crumbBody}</div>
-${body}
-<script>hljs.initHighlightingOnLoad();</script>
+  <div class="crumbs">${crumbBody}</div>
+  ${body}
+
+  <script src="/prism.js"></script>
 </body>
 </html>`;
 }
