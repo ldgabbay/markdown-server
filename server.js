@@ -219,7 +219,7 @@ const requestHandler = (request, response) => {
     if (parsedURL.pathname.endsWith('.md')) {
       response.statusCode = 200;
       response.setHeader('Content-Type', 'text/html');
-      const html = execSync(`cmark-gfm -e table -e strikethrough -e autolink -e tagfilter "${fsPath}"`);
+      const html = execSync(`cmark-gfm -e table -e strikethrough -e autolink "${fsPath}"`);
       response.end(wrap(pathElements, html));
       return;
     }
