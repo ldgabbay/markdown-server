@@ -8,6 +8,8 @@ const execSync = require('child_process').execSync;
 
 const minimist = require('minimist');
 
+const puml = require('./lib/puml.js');
+
 
 function wrap(pathElements, body) {
   var pathElements = pathElements.slice(1);
@@ -221,6 +223,16 @@ const requestHandler = (request, response) => {
       response.setHeader('Content-Type', 'text/html');
       const html = execSync(`cmark-gfm -e table -e strikethrough -e autolink "${fsPath}"`);
       response.end(wrap(pathElements, html));
+      return;
+    }
+
+
+    //=== PlantUML file
+
+    if (parsedURL.pathname.endsWith('.puml')) {
+      response.statusCode = 307;
+      response.setHeader('Location', puml.svgUrl(fs.readFileSync(fsPath, 'utf8')));
+      response.end();
       return;
     }
 
