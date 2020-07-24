@@ -21,6 +21,7 @@
     "url": "https://github.com/ldgabbay/markdown-server"
   },
   "dependencies": {
+    "got": "^11.5.1",
     "minimist": "^1.2.0"
   }
 }

@@ -7,6 +7,7 @@ const url = require('url');
 const execSync = require('child_process').execSync;
 
 const minimist = require('minimist');
+const got = require('got');
 
 const puml = require('./lib/puml.js');
 
@@ -141,7 +142,7 @@ const root = path.resolve(process.cwd(), args.r ? args.r : args.root ? args.root
 const port = Number.parseInt(args.p ? args.p : args.port ? args.port : '8080');
 
 
-const requestHandler = (request, response) => {
+const requestHandler = async (request, response) => {
   console.log(request.method, request.url);
 
   if (request.method === 'GET') {
@@ -230,9 +231,16 @@ const requestHandler = (request, response) => {
     //=== PlantUML file
 
     if (parsedURL.pathname.endsWith('.puml')) {
-      response.statusCode = 307;
-      response.setHeader('Location', puml.svgUrl(fs.readFileSync(fsPath, 'utf8')));
-      response.end();
+      try {
+        const pumlResponse = await got(puml.svgUrl(fs.readFileSync(fsPath, 'utf8')));
+        response.statusCode = pumlResponse.statusCode;
+        response.setHeader('Content-Type', pumlResponse.headers['content-type']);
+        response.end(pumlResponse.body);
+      }
+      catch(err) {
+        response.statusCode = 500;
+        response.end();
+      }
       return;
     }
 
