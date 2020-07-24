@@ -2063,7 +2063,6 @@ table tr th :last-child, table tr td :last-child {
 img {
   margin: auto;
   max-width: 80%;
-  max-height: 300px;
 }
 
 span.frame {
