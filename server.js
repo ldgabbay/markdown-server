@@ -10,6 +10,7 @@ const minimist = require('minimist');
 const got = require('got');
 
 const puml = require('./lib/puml.js');
+const javapuml = require('./lib/java_puml.js');
 
 
 function wrap(pathElements, body) {
@@ -232,10 +233,10 @@ const requestHandler = async (request, response) => {
 
     if (parsedURL.pathname.endsWith('.puml')) {
       try {
-        const pumlResponse = await got(puml.svgUrl(fs.readFileSync(fsPath, 'utf8')));
-        response.statusCode = pumlResponse.statusCode;
-        response.setHeader('Content-Type', pumlResponse.headers['content-type']);
-        response.end(pumlResponse.body);
+        const body = await javapuml.as_svg(fsPath);
+        response.statusCode = 200;
+        response.setHeader('Content-Type', 'image/svg+xml');
+        response.end(body);
       }
       catch(err) {
         response.statusCode = 500;
