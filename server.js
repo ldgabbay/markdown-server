@@ -9,12 +9,10 @@ const execSync = require('child_process').execSync;
 const minimist = require('minimist');
 const got = require('got');
 
-const puml = require('./lib/puml.js');
-const javapuml = require('./lib/java_puml.js');
+const converters = require('./lib/converters');
 
 
 function wrap(pathElements, body) {
-  var pathElements = pathElements.slice(1);
   if (pathElements[pathElements.length-1] === '') {
     pathElements = pathElements.slice(0, -1);
   }
@@ -47,6 +45,7 @@ function wrap(pathElements, body) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="/converters.css" />
     <link rel="stylesheet" href="/fonts.css" />
     <link rel="stylesheet" href="/markdown.css" />
     <link rel="stylesheet" href="/prism.css" />
@@ -56,6 +55,7 @@ function wrap(pathElements, body) {
   <div class="crumbs">${crumbBody}</div>
   ${body}
 
+  <script src="/converters.js"></script>
   <script src="/prism.js"></script>
 </body>
 </html>`;
@@ -150,9 +150,35 @@ const requestHandler = async (request, response) => {
 
   if (request.method === 'GET') {
     const parsedURL = url.parse(request.url);
-    const pathElements = parsedURL.pathname.split('/').map(x => decodeURIComponent(x));
-    let fsPath = path.join(root, ...pathElements);
+    if (parsedURL.pathname.length === 0 || parsedURL.pathname[0] !== '/')
+      console.warn('pathname does not begin with /');
+    let pathElements = parsedURL.pathname.split('/').map(x => decodeURIComponent(x));
+    if (pathElements.length !== 0 && pathElements[0] === '')
+      pathElements.shift();
 
+    if (pathElements.length === 3 && pathElements[0] === '_') {
+      const language = pathElements[1];
+      if (language === 'texmath') {
+        const { body, contentType } = await converters.texmath(pathElements[2]);
+        response.statusCode = 200;
+        response.setHeader('Content-Type', contentType);
+        response.setHeader('Cache-Control', 'max-age=31536000, immutable');
+        response.end(body);
+        return;
+      } else if (language === 'puml') {
+        const { body, contentType } = await converters.plantuml(pathElements[2]);
+        response.statusCode = 200;
+        response.setHeader('Content-Type', contentType);
+        response.setHeader('Cache-Control', 'max-age=31536000, immutable');
+        response.end(body);
+        return;
+      }
+      response.statusCode = 400;
+      response.end();
+      return;
+    }
+
+    let fsPath = path.join(root, ...pathElements);
     if (!fs.existsSync(fsPath)) {
       // wasn't found in root, try in "./static/"
       fsPath = path.join(__dirname, "static", ...pathElements);
@@ -223,10 +249,10 @@ const requestHandler = async (request, response) => {
     //=== Markdown file
 
     if (parsedURL.pathname.endsWith('.md')) {
+      const { body, contentType } = await converters.markdown(await fs.promises.readFile(fsPath));
       response.statusCode = 200;
-      response.setHeader('Content-Type', 'text/html');
-      const html = execSync(`cmark-gfm -e table -e strikethrough -e autolink "${fsPath}"`);
-      response.end(wrap(pathElements, html));
+      response.setHeader('Content-Type', contentType);
+      response.end(wrap(pathElements, body));
       return;
     }
 
@@ -234,16 +260,10 @@ const requestHandler = async (request, response) => {
     //=== PlantUML file
 
     if (parsedURL.pathname.endsWith('.puml')) {
-      try {
-        const body = await javapuml.as_svg(fsPath);
-        response.statusCode = 200;
-        response.setHeader('Content-Type', 'image/svg+xml');
-        response.end(body);
-      }
-      catch(err) {
-        response.statusCode = 500;
-        response.end();
-      }
+      const { body, contentType } = await converters.plantuml(await fs.promises.readFile(fsPath));
+      response.statusCode = 200;
+      response.setHeader('Content-Type', contentType);
+      response.end(body);
       return;
     }
 
