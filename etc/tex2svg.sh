@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# $\displaystyle XXXXXXX$\bye
-
 X=$(mktemp -d)
 cat > $X/file.tex
 latex -output-directory $X $X/file.tex &>/dev/null
