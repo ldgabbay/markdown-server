@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // prism.js adds the classname to the <pre> parent element too, which breaks this.  so load this script first.
     for (let node of nodes) {
       let img = document.createElement('img');
-      img.src = `_/${converter}/${encodeURIComponent(node.innerText.replace(/^\s+|\s+$/g, ''))}`;
+      img.src = `/_/${converter}/${encodeURIComponent(node.innerText.replace(/^\s+|\s+$/g, ''))}`;
       img.classList.add(converter);
       let div = document.createElement('div');
       div.appendChild(img);
