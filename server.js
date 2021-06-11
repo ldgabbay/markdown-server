@@ -11,6 +11,11 @@ const got = require('got');
 
 const converters = require('./lib/converters');
 
+function fixedEncodeURIComponent(str) {
+  return encodeURIComponent(str).replace(/[!'()*]/g, function(c) {
+    return '%' + c.charCodeAt(0).toString(16);
+  });
+}
 
 function wrap(pathElements, body) {
   if (pathElements[pathElements.length-1] === '') {
@@ -28,7 +33,7 @@ function wrap(pathElements, body) {
     crumbBody = `<a href="/">${linkHomeIcon}</a>`;
     var url = "/";
     pathElements.slice(0, -1).forEach(function(pathElement) {
-      url += `${encodeURIComponent(pathElement)}/`
+      url += `${fixedEncodeURIComponent(pathElement)}/`
       crumbBody += ` &rsaquo; <a href="${url}">${pathElement}</a>`;
     });
     crumbBody += ` &rsaquo; ${pathElements[pathElements.length-1]}`;
@@ -233,10 +238,10 @@ const requestHandler = async (request, response) => {
       const chunks = [];
       chunks.push("<table><tbody>")
       for (let dir of dirs) {
-        chunks.push(`<tr><td><b><a href=\"${encodeURIComponent(dir)}/\">${dir}/</a></b></td></tr>`);
+        chunks.push(`<tr><td><b><a href=\"${fixedEncodeURIComponent(dir)}/\">${dir}/</a></b></td></tr>`);
       }
       for (let file of files) {
-        chunks.push(`<tr><td><a href=\"${encodeURIComponent(file)}\">${file}</a></td></tr>`);
+        chunks.push(`<tr><td><a href=\"${fixedEncodeURIComponent(file)}\">${file}</a></td></tr>`);
       }
       chunks.push("</tbody></table>");
 
