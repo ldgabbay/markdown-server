@@ -23,6 +23,6 @@
   "dependencies": {
     "got": "^11.5.1",
     "keccak256": "^1.0.2",
-    "minimist": "^1.2.0"
+    "minimist": "^1.2.3"
   }
 }
