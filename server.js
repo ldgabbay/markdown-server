@@ -4,7 +4,6 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const url = require('url');
-const execSync = require('child_process').execSync;
 
 const minimist = require('minimist');
 const got = require('got');
