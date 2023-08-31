@@ -292,7 +292,19 @@ const requestHandler = async (request, response) => {
   }
 };
 
-const server = http.createServer(requestHandler);
+const safeRequestHandler = async (request, response) => {
+  try {
+    await requestHandler(request, response);
+  }
+  catch (error) {
+    response.statusCode = 500;
+    response.setHeader('Content-Type', 'text/plain');
+    response.end(error.toString());
+  }
+};
+
+
+const server = http.createServer(safeRequestHandler);
 
 server.listen(port, (err) => {
   if (err) {
